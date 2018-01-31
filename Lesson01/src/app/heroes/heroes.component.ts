@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-//Import clases
-import { Hero } from '../entities/hero';
+import { Hero } from '../entities/Hero';
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-heroes',
@@ -10,14 +10,23 @@ import { Hero } from '../entities/hero';
 })
 export class HeroesComponent implements OnInit {
 
-  hero : Hero = {
-    id : 1,
-    name : 'Windstorm'
-  }
+  heroes : Hero[];  
+  
+  selectedHero: Hero;
 
-  constructor() { }
+  constructor(private heroService: HeroService) { 
+  }
 
   ngOnInit() {
+    this.getHeroes();
   }
 
+  getHeroes(): void {
+    this.heroService.getHeroes()
+        .subscribe(heroes => this.heroes = heroes);
+  }
+
+  onSelect(hero: Hero): void {
+    this.selectedHero = hero;
+  }
 }
